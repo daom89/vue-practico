@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1>{{ titleHead }}</h1>
+        <transition name="fade">
+            <span v-if="showDescription" v-bind:title="descripcion">
+                Esta es una descripcion Basica, Contador: {{ counter }}
+            </span>
+        </transition>
+        <p>
+            <button v-on:click="showDescription = !showDescription">
+                Mostrar/Ocultar
+            </button>
+            <button v-on:click="stopInterval">
+                Stop
+            </button>
+        </p>
+        <div>
+            Aplicaciones: 
+            <ol>
+                <li v-for="todo in todos">
+                    {{ todo.text }}
+                </li>
+            </ol>
+        </div>
+        <br>
+        <div>
+            <input v-model="txtInvert"><br>
+            <button v-on:click="reverseMessage">Mensaje invertido</button>
+        </div>
+        <div>
+            <ol>
+                <todo-item
+                    v-for="item in groceryList"
+                    v-bind:todo="item"
+                    v-bind:key="item.id">
+                </todo-item>
+            </ol>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+
+        /* const TodoItem = {
+            props: ['todo'],
+            template: '<li>{{ todo.text }}</li>'
+        } */
+
+        const myApp = {
+            data () {
+                return {
+                    titleHead: 'Hola Vue!',
+                    counter: 0,
+                    counterId: 0,
+                    descripcion: 'Usted cargó esta página el ' + new Date().toLocaleString(),
+                    showDescription: true,
+                    txtInvert: "Soy un mensaje!",
+                    todos: [
+                        { id: 0, text: 'Aprender JavaScript' },
+                        { id: 1, text: 'Aprender Vue' },
+                        { id: 2,text: 'Construir algo increíble' }
+                    ],
+                    groceryList: [
+                        { id: 0, text: 'Vegetales' },
+                        { id: 1, text: 'Queso' },
+                        { id: 2, text: 'Cualquier otra cosa que se supone que los humanos coman' }
+                    ]
+                }
+            },
+            mounted() {
+                this.counterId = setInterval(() => {
+                this.counter++
+                }, 1000)
+            },
+            /* components: {
+                TodoItem // Register a new component
+            }, */
+            methods: {
+                reverseMessage () {
+                    this.txtInvert = this.txtInvert
+                    .split('')
+                    .reverse()
+                    .join('')
+                },
+                stopInterval(){
+                    clearInterval(this.counterId)
+                }
+            }
+        }
+
+        const app = Vue.createApp(myApp)
+
+        app.component('todo-item', {
+            props: ['todo'],
+            template: `<li>{{ todo.text }}</li>`
+        })
+
+        app.mount('#app')
+
+    </script>
+</body>
+</html>
